@@ -12,6 +12,12 @@ function Tab(topic) {
     let div = document.createElement('div');
     div.classList.add('tab');
     div.textContent = topic;
+    div.value = topic;
+
+    div.addEventListener('click', event => {
+        console.log(event.target.value);
+    });
+
     return div;
 }
 
