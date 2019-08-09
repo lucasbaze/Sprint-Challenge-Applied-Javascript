@@ -56,6 +56,7 @@ axios
             let [topic, array] = item;
             array.forEach(article => {
                 let cardArticle = articleCreator(article);
+                cardArticle.dataset.topic = topic;
                 cardContainer.append(cardArticle);
             });
         });

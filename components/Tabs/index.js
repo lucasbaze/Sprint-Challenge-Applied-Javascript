@@ -15,7 +15,16 @@ function Tab(topic) {
     div.value = topic;
 
     div.addEventListener('click', event => {
-        console.log(event.target.value);
+        let articles = document.querySelectorAll('.card');
+        articles.forEach(article => {
+            article.classList.remove('displayed');
+        });
+        articles.forEach(article => {
+            if (article.dataset.topic !== event.target.value) {
+                article.classList.add('displayed');
+            }
+        });
+        console.log(articles);
     });
 
     return div;
@@ -26,8 +35,25 @@ let tabsUrl = 'https://lambda-times-backend.herokuapp.com/topics';
 axios
     .get(tabsUrl)
     .then(response => {
+        console.log(response);
         let topicContainer = document.querySelector('.topics');
+
+        let allButton = document.createElement('div');
+        allButton.textContent = 'ALL';
+        allButton.classList.add('tab');
+        allButton.value = 'all';
+        allButton.addEventListener('click', event => {
+            let articles = document.querySelectorAll('.card');
+            articles.forEach(article => {
+                article.classList.remove('displayed');
+            });
+        });
+        topicContainer.append(allButton);
+
         response.data.topics.forEach(topic => {
+            if (topic === 'node.js') {
+                topic = 'node';
+            }
             let topicItem = Tab(topic);
             topicContainer.append(topicItem);
         });
