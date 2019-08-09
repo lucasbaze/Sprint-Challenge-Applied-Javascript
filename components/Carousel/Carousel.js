@@ -17,3 +17,86 @@
     <div class="right-button"> > </div>
   </div>
 */
+
+function moveImages(direction) {
+    let images = document.querySelectorAll('.carousel-container img');
+    let imagesArray = Array.from(images);
+
+    function move(direction) {
+        let currentIndex = imagesArray
+            .filter(img => {
+                return img.className == 'active';
+            })
+            .map(img => img.id);
+
+        let index = Number(currentIndex[0]) + direction;
+
+        if (index == 4) {
+            index = 0;
+        } else if (index == -1) {
+            index = 3;
+        }
+
+        return index;
+    }
+
+    let imageMove = move(direction);
+
+    images.forEach(img => {
+        img.classList.remove('active');
+    });
+
+    images.forEach(img => {
+        if (img.id == imageMove) {
+            img.classList.add('active');
+        }
+    });
+}
+
+function createCarousel() {
+    let carousel = document.createElement('div');
+    let leftButton = document.createElement('div');
+    let rightButton = document.createElement('div');
+
+    leftButton.textContent = '<';
+    rightButton.textContent = '>';
+
+    leftButton.addEventListener('click', event => {
+        moveImages(-1);
+    });
+
+    rightButton.addEventListener('click', event => {
+        moveImages(1);
+    });
+
+    carousel.classList.add('carousel');
+    leftButton.classList.add('left-button');
+    rightButton.classList.add('right-button');
+
+    let images = [
+        './assets/carousel/mountains.jpeg',
+        './assets/carousel/computer.jpeg',
+        './assets/carousel/trees.jpeg',
+        './assets/carousel/turntable.jpeg',
+    ];
+
+    carousel.append(leftButton);
+
+    images.forEach((image, index) => {
+        let img = document.createElement('img');
+        img.src = image;
+        img.id = index;
+        if (index == 0) {
+            img.classList.add('active');
+        }
+        carousel.append(img);
+    });
+
+    carousel.append(rightButton);
+
+    let carouselContainer = document.querySelector('.carousel-container');
+
+    carouselContainer.append(carousel);
+}
+
+createCarousel();
